@@ -104,9 +104,9 @@ async def scheduler():
             await check_new_stars()
             await notify_new_day()
             save_globals()
-        except Exception:
-            pass
-        await asyncio.sleep(CACHE_TTL * 1000)
+        except Exception as e:
+            print(f"scheduler error {e}")
+        await asyncio.sleep(CACHE_TTL)
 
 
 @dp.message(Command("start"))
