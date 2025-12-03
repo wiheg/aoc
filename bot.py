@@ -144,8 +144,14 @@ async def cb_day(callback: types.CallbackQuery):
         if str(day) not in member["completion_day_level"]:
             continue
         stars = member["completion_day_level"]
-        star1 = stars[str(day)]["1"]
-        star2 = stars[str(day)]["2"]
+        try:
+            star1 = stars[str(day)]["1"]
+        except Exception:
+            star1 = None
+        try:
+            star2 = stars[str(day)]["2"]
+        except Exception:
+            star2 = None
         line = f"*{name}*: "
         if star1:
             line += "★"
