@@ -78,14 +78,21 @@ async def check_new_stars():
         name = member["name"]
         for day in member["completion_day_level"]:
             day_res = member["completion_day_level"][day]
-            if day_res["1"]["star_index"] > _last_star:
-                mx = max(mx, day_res["1"]["star_index"])
-                await bot.send_message(NOTIFY_CHAT_ID, f"{name} получил первую звезду за день {int(day)}! ★",
-                                       parse_mode=ParseMode.MARKDOWN)
-            if day_res["2"]["star_index"] > _last_star:
-                mx = max(mx, day_res["2"]["star_index"])
-                await bot.send_message(NOTIFY_CHAT_ID, f"{name} получил вторую звезду за день {int(day)}! ★★",
-                                       parse_mode=ParseMode.MARKDOWN)
+            try:
+                if day_res["1"]["star_index"] > _last_star:
+                    mx = max(mx, day_res["1"]["star_index"])
+                    await bot.send_message(NOTIFY_CHAT_ID, f"{name} получил первую звезду за день {int(day)}! ★",
+                                           parse_mode=ParseMode.MARKDOWN)
+            except Exception as e:
+                print(f"ошибка поиска звезды 1 {e}")
+            try:
+                if day_res["2"]["star_index"] > _last_star:
+                    mx = max(mx, day_res["2"]["star_index"])
+                    await bot.send_message(NOTIFY_CHAT_ID, f"{name} получил вторую звезду за день {int(day)}! ★★",
+                                           parse_mode=ParseMode.MARKDOWN)
+            except Exception as e:
+                print(f"ошибка поиска звезды 2 {e}")
+
     _last_star = mx
 
 
