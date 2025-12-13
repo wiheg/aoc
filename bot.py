@@ -99,7 +99,7 @@ async def check_new_stars():
 async def notify_new_day():
     global _last_day
     today = (datetime.datetime.now() - datetime.timedelta(hours=8)).day
-    if today != _last_day:
+    if today != _last_day and today <= DAYS:
         _last_day = today
         await bot.send_message(NOTIFY_CHAT_ID, f"🎄День {today} уже доступен!", parse_mode=ParseMode.MARKDOWN)
 
