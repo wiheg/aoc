@@ -2,6 +2,7 @@ import time
 import asyncio
 import requests
 import datetime
+import subprocess as sp
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
@@ -116,6 +117,11 @@ async def scheduler():
         await asyncio.sleep(CACHE_TTL)
 
 
+async def get_temperature():
+    s = sp.run(["sensors"], stdout=sp.PIPE, text=True)
+    return s.stdout.split()[-1]
+
+
 @dp.message(Command("start"))
 async def start(message: types.Message):
     await message.answer(
@@ -127,6 +133,13 @@ async def leaderboard(message: types.Message):
     data = get_leaderboard()
     text = format_leaderboard(data)
     await message.answer(text, parse_mode=ParseMode.MARKDOWN, reply_markup=leaderboard_keyboard())
+
+
+@dp.message(Command("temperature"))
+async def temperature(message: types.Message):
+    temperature = get_temperature()
+    await message.answer(f"Температура на малинке прямо сейчас {temperature}", parse_mode=ParseMode.MARKDOWN,
+                         reply_markup=leaderboard_keyboard())
 
 
 @dp.callback_query(lambda c: c.data.startswith("day:"))
